@@ -29,7 +29,7 @@ def parse_file(file_name: str):
             seq_len = int(line)
             continue
         if i == length - 1:
-            mvt_seq = list(line.rstrip())
+            mvt_seq = list(line.rstrip())[:seq_len]
             continue
         # matrix.append(list(line.rstrip()))
     matrix_input = lines[1:-3]
@@ -41,9 +41,6 @@ def search_coins(n, matrix, p_row, p_col, seq_len, mvt_seq):
     curr_pos = [p_row, p_col]
     cnt = 0
     for i in range(seq_len):
-        if matrix[curr_pos[0]][curr_pos[1]] == "C":
-            matrix[curr_pos[0]][curr_pos[1]] = "0"
-            cnt += 1
         dir = mvt_seq[i]
         if (dir == "L"):
             curr_pos[1] = curr_pos[1] - 1
@@ -53,13 +50,18 @@ def search_coins(n, matrix, p_row, p_col, seq_len, mvt_seq):
             curr_pos[0] = curr_pos[0] - 1
         if (dir == "D"):
             curr_pos[0] = curr_pos[0] + 1
-        print("moving: " + dir + " next idx: " + str(curr_pos))
+        print("moving: " + dir + " next idx: " + str(curr_pos) + " with found coins: " + str(cnt))
+        if matrix[curr_pos[0]][curr_pos[1]] == "C":
+            matrix[curr_pos[0]][curr_pos[1]] = "0"
+            cnt += 1
+
     return cnt
 
 
 
 onlyfiles = [f for f in listdir("in") if isfile(join("in", f))]
 for file in onlyfiles:
+    print("\nparsing file " + file)
     (n, matrix, p_row, p_col, seq_len, mvt_seq) = parse_file(file)
     cnt = search_coins(*(n, matrix, p_row, p_col, seq_len, mvt_seq))
     with open("out/" + file + ".out", 'w') as f:
