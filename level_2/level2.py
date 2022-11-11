@@ -26,11 +26,30 @@ def parse_file(file_name: str):
             seq_len = int(line)
             continue
         if i == length - 1:
-            mvt_seq.append(list(line.rstrip()))
+            mvt_seq = list(line.rstrip())
             continue
         matrix.append(list(line.rstrip()))
     return n, matrix, p_row, p_col, seq_len, mvt_seq
 
+def search_coins(n, matrix, p_row, p_col, seq_len, mvt_seq):
+    curr_pos = [p_row, p_col]
+    cnt = 0
+    for i in range(seq_len):
+        if matrix[curr_pos[0]][curr_pos[1]] == "C":
+            matrix[curr_pos[0]][curr_pos[1]] = "0"
+            cnt += 1
+        dir = mvt_seq[i]
+        if (dir == "L"):
+            curr_pos[1] -= 1
+        if (dir == "R"):
+            curr_pos[1] += 1
+        if (dir == "U"):
+            curr_pos[0] += 1
+        if (dir == "L"):
+            curr_pos[0] -= 1
+    return cnt
 
 (n, matrix, p_row, p_col, seq_len, mvt_seq) = parse_file("in/level2_1.in")
-print((n, matrix, p_row, p_col, seq_len, mvt_seq))
+print((n, p_row, p_col, seq_len, mvt_seq))
+cnt = search_coins(*(n, matrix, p_row, p_col, seq_len, mvt_seq))
+print(cnt)
