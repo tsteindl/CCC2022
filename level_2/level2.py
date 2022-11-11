@@ -1,3 +1,6 @@
+from os import listdir
+from os.path import isfile, join
+
 def parse_file(file_name: str):
     matrix = []
     n = 0
@@ -6,7 +9,7 @@ def parse_file(file_name: str):
     seq_len = 0
     mvt_seq = []
     matrix = []
-    with open(file_name) as f:
+    with open("in/" + file_name) as f:
         lines = f.readlines()
     # for line in lines:
     #     line = line.rstrip()
@@ -49,7 +52,14 @@ def search_coins(n, matrix, p_row, p_col, seq_len, mvt_seq):
             curr_pos[0] -= 1
     return cnt
 
-(n, matrix, p_row, p_col, seq_len, mvt_seq) = parse_file("in/level2_1.in")
-print((n, p_row, p_col, seq_len, mvt_seq))
-cnt = search_coins(*(n, matrix, p_row, p_col, seq_len, mvt_seq))
-print(cnt)
+
+
+onlyfiles = [f for f in listdir("in") if isfile(join("in", f))]
+for file in onlyfiles:
+    (n, matrix, p_row, p_col, seq_len, mvt_seq) = parse_file(file)
+    print((n, p_row, p_col, seq_len, mvt_seq))
+    cnt = search_coins(*(n, matrix, p_row, p_col, seq_len, mvt_seq))
+    print(cnt)
+    with open("out/" + file + ".out", 'w') as f:
+        f.write(str(cnt))
+
