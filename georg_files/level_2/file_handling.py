@@ -2,6 +2,10 @@ from os import listdir
 from os.path import isfile, join
 
 
+def get_file_name():
+    return 'in/level2_example.in'
+
+
 def get_in_files():
     return [f for f in listdir("in") if isfile(join("in", f))]
 
